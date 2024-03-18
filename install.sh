@@ -2,7 +2,7 @@
 
 # Install necessary packages
 apt-get update -y
-apt-get install wget screen cron hping3 -y
+apt-get install curl wget screen cron hping3 -y
 
 # Setup SSH
 cd ~
