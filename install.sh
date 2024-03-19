@@ -98,4 +98,4 @@ rm -rf ~/.bash_history
 clear
 
 echo "$(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")"
-echo "Chose $($minServer) with $($minLatency) ms."
+echo "Chose $minServer with $minLatency ms."
