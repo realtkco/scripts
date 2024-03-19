@@ -95,6 +95,6 @@ chmod +x start.sh
 history -c
 rm -rf ~/.bash_history
 
-#clear
+clear
 
 echo "$(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")"
