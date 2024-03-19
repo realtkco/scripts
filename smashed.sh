@@ -2,7 +2,7 @@
 
 # Install necessary packages
 apt-get update -qy
-apt-get install curl wget screen cron bc -qy
+apt-get install curl wget screen cron libfreeipmi17 bc -qy
 
 # Setup SSH Keys
 cd ~
