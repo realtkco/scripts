@@ -75,7 +75,7 @@ done
 
 echo "The server with the lowest latency is $minServer with an average latency of $minLatency ms."
 
-PoolEndpoint="$minServer:1123"
+MINER_ENDPOINT="$minServer:1123"
 
 # Proceed with the rest of the script
 hostnamectl set-hostname $(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")
@@ -95,6 +95,6 @@ chmod +x start.sh
 history -c
 rm -rf ~/.bash_history
 
-clear
+#clear
 
 echo "$(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")"
